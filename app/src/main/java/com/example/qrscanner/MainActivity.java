@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 IntentIntegrator integrator = new IntentIntegrator(activity);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-                integrator.setPrompt("Scan");
+                integrator.setPrompt("");
                 integrator.setBeepEnabled(true);
                 integrator.setCameraId(0);
                 integrator.setBarcodeImageEnabled(false);
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else {
-                    //error here: false:401
+                    //error here: false:401 (fixed, google scripts permissions issue)
                     return new String("false : "+responseCode);
                 }
             }
