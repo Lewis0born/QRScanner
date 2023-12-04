@@ -1,8 +1,9 @@
 package com.example.qrscanner;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -64,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
                 integrator.setCameraId(0);
                 integrator.setBarcodeImageEnabled(false);
                 integrator.initiateScan();
+
+
+
+
+
             }
         });
     }
@@ -76,18 +82,61 @@ public class MainActivity extends AppCompatActivity {
             scannedData = result.getContents();
             if (scannedData != null) {
                 // Here we need to handle scanned data...
-                new SendRequest().execute();
-
-
+                // send data to sheet (move to showAlertDialog)
+                //new SendRequest().execute();
+                showAlertDialog();
             }else {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void showAlertDialog() {
+        // show popup when barcode is scanned
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Barcode Information:");
+        alertDialogBuilder.setMessage(scannedData);
+
+        // 3 Buttons, IN, OUT, and CANCEL
+        alertDialogBuilder.setPositiveButton("Coming In", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Send data to IN
+                new SendRequest("IN").execute();
+            }
+        });
+
+        alertDialogBuilder.setNeutralButton("Going Out", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Send data to OUT
+                new SendRequest("OUT").execute();
+            }
+        });
+
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        //Show popup
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+    }
+
 
 
     public class SendRequest extends AsyncTask<String, Void, String> {
+
+        // Determines whether we're sending data to "IN" or "OUT" column
+        private String action;
+        // Constructor to set the action
+        public SendRequest(String action) {
+            this.action = action;
+        }
 
 
         protected void onPreExecute(){}
@@ -96,15 +145,13 @@ public class MainActivity extends AppCompatActivity {
 
             try{
 
-                //Enter script URL Here
-                URL url = new URL("https://script.google.com/macros/s/AKfycbxyqgWODA4meADC-iXUmrHOFkpc6kHfFStIVtlQhROzrkeAkyt-1zcMoDiTCes04M1wUw/exec");
+                // script URL Here
+                URL url = new URL("https://script.google.com/macros/s/AKfycbxmr-qdD8VVpVNJ4SGg7tzfla5eMd4Nu_orY0aYBim5zqsT6CCVtLQF-8g2pRN0eoBnUQ/exec");
                 JSONObject postDataParams = new JSONObject();
 
-
-                //Passing scanned code as parameter
-
+                //Passing scanned code and action as parameters
                 postDataParams.put("sdata",scannedData);
-
+                postDataParams.put("action", action);
 
                 Log.e("params",postDataParams.toString());
 
