@@ -10,20 +10,37 @@
         android:id="@+id/textViewHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="StockScan"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="46dp"
+        android:text="StockScan"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scan"
-        android:layout_centerInParent="true"
         android:id="@+id/scan_btn"
-        />
+        android:layout_width="268dp"
+        android:layout_height="121dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="70dp"
+        android:layout_marginBottom="128dp"
+        android:text="Scan"
+        android:textSize="32dp" />
+
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="337dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="136dp"
+        android:hint="Search bar that doesn't work..."
+        android:inputType="text"
+        android:minHeight="48dp" />
 
 
 </RelativeLayout>

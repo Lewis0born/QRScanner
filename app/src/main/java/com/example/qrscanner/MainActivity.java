@@ -67,9 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 integrator.initiateScan();
 
 
-
-
-
             }
         });
     }
@@ -97,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilder.setTitle("Barcode Information:");
         alertDialogBuilder.setMessage(scannedData);
 
-        // 3 Buttons, IN, OUT, and CANCEL
+        // 4 Buttons: IN, OUT, SOLD, and CANCEL
         alertDialogBuilder.setPositiveButton("Coming In", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -106,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        alertDialogBuilder.setNeutralButton("Going Out", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNeutralButton("Delivered", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Send data to OUT
@@ -114,18 +111,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("Sold", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                // Send data to SOLD
+                new SendRequest("SOLD").execute();
             }
         });
 
-        //Show popup
+        // Show popup
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
     }
+
 
 
 
@@ -145,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
 
             try{
 
-                // script URL Here
-                URL url = new URL("https://script.google.com/macros/s/AKfycbxmr-qdD8VVpVNJ4SGg7tzfla5eMd4Nu_orY0aYBim5zqsT6CCVtLQF-8g2pRN0eoBnUQ/exec");
+                // google script URL Here
+                URL url = new URL("https://script.google.com/macros/s/AKfycbyau90ON0xMx3mas3oQgmbhjh8EOAfMJZ6kbgL8moWNV9yUtAnoV8RN29hL1Krqo06r/exec");
                 JSONObject postDataParams = new JSONObject();
 
                 //Passing scanned code and action as parameters
