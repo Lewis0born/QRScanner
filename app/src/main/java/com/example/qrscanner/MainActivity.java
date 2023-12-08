@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             try{
 
                 // google script URL Here
-                URL url = new URL("https://script.google.com/macros/s/AKfycbyau90ON0xMx3mas3oQgmbhjh8EOAfMJZ6kbgL8moWNV9yUtAnoV8RN29hL1Krqo06r/exec");
+                URL url = new URL("https://script.google.com/macros/s/AKfycbytCW7XJdn5uJ5Os3n4IinwTcMdTyt4M5R1wWh6Ppc1Abj7wMhEJXzpmrUzyMHSooqjWg/exec");
                 JSONObject postDataParams = new JSONObject();
 
                 //Passing scanned code and action as parameters

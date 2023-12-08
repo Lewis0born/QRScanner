@@ -35,8 +35,8 @@ StockScan is an Android app that allows users to scan barcodes and send the scan
 ```javascript
 function doGet(e) {
   Logger.log("Received GET request: " + JSON.stringify(e));
-  let ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1NRGIz85f7rwK7Y4O9KX_ko6EOEn6Ngdf3W7j4Ib0W5c/edit");
-  let sheet = ss.getSheetByName("OrderTracker");
+  let ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/16LrNS06mjl7x0aNM17287dZ6mhSKxjAxM9gOc-hh1Dk/edit");
+  let sheet = ss.getSheetByName("StockScan Order Tracker");
 
   // Check for "action" param
   let action = e.parameter.action;
@@ -48,8 +48,8 @@ function doGet(e) {
 
 function doPost(e) {
   Logger.log("Received POST request: " + JSON.stringify(e));
-  let ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1NRGIz85f7rwK7Y4O9KX_ko6EOEn6Ngdf3W7j4Ib0W5c/edit");
-  let sheet = ss.getSheetByName("OrderTracker");
+  let ss = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/16LrNS06mjl7x0aNM17287dZ6mhSKxjAxM9gOc-hh1Dk/edit");
+  let sheet = ss.getSheetByName("StockScan Order Tracker");
 
   // Check for "action" param
   let action = e.parameter.action;
@@ -75,7 +75,7 @@ function insert(e, sheet, action) {
   // Set start row for data insertion
   if (action === "IN" || action == "SOLD") {
     startRow = startRowIn;
-    productName = scannedData.split("/")[1]; // Extract product name
+    productName = scannedData.split(":")[1]; // Extract product name
   } else if (action === "OUT") {
     startRow = startRowOut;
   }
@@ -87,14 +87,15 @@ function insert(e, sheet, action) {
     dataColumn = 4;
   }
 
-  // Insert scannedData
-  sheet.getRange(startRow, dataColumn).setValue(scannedData);
-
-  // Insert date/time
-  sheet.getRange(startRow, dataColumn + 1).setValue(ctime);
+   // Insert scannedData, but only if the action is not "SOLD"
+  if (action !== "SOLD") {
+    sheet.getRange(startRow, dataColumn).setValue(scannedData);
+    // Insert date/time
+    sheet.getRange(startRow, dataColumn + 1).setValue(ctime);
+  }
 
   // UPDATE PRODUCT COUNTER
-  let sheet2 = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1dmdrdkQ86O6_FPxTmhQlmV15BFZJccQ7T4vfDlbUurU/edit").getSheetByName("ProductCounter"); // Access Sheet2 by URL
+  let sheet2 = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1cZ7_WoVpVOr4wVqNNbMA73gQptsnOCIoDNftqNyJ4mM/edit").getSheetByName("StockScan Stock Counter"); // Access Sheet2 by URL
   let productRow = findProduct(sheet2, productName); // Find product row
 
   // Increment product count if coming IN
@@ -145,6 +146,7 @@ function findProduct(sheet, productName) {
   }
   return -1; // Product not found
 }
+
 
 
 
