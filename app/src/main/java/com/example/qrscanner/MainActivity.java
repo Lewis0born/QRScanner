@@ -98,24 +98,42 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilder.setPositiveButton("Coming In", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Send data to IN
-                new SendRequest("IN").execute();
+                showConfirmationDialog("Confirm Coming In?", "Yes", "No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked Yes, send data to IN
+                        new SendRequest("IN").execute();
+                        showToast("Coming In request sent!");
+                    }
+                });
             }
         });
 
         alertDialogBuilder.setNeutralButton("Delivered", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Send data to OUT
-                new SendRequest("OUT").execute();
+                showConfirmationDialog("Confirm Delivery?", "Yes", "No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked Yes, send data to OUT
+                        new SendRequest("OUT").execute();
+                        showToast("Delivery request sent!");
+                    }
+                });
             }
         });
 
         alertDialogBuilder.setNegativeButton("Sold", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Send data to SOLD
-                new SendRequest("SOLD").execute();
+                showConfirmationDialog("Confirm Sold?", "Yes", "No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked Yes, send data to SOLD
+                        new SendRequest("SOLD").execute();
+                        showToast("Sold request sent!");
+                    }
+                });
             }
         });
 
@@ -123,6 +141,20 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    private void showConfirmationDialog(String message, String positiveText, String negativeText, DialogInterface.OnClickListener positiveClickListener) {
+        AlertDialog.Builder confirmationDialogBuilder = new AlertDialog.Builder(this);
+        confirmationDialogBuilder.setMessage(message);
+        confirmationDialogBuilder.setPositiveButton(positiveText, positiveClickListener);
+        confirmationDialogBuilder.setNegativeButton(negativeText, null);
+        AlertDialog confirmationDialog = confirmationDialogBuilder.create();
+        confirmationDialog.show();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
 
 
 
